@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}Gerenciamento de Estoque{% endblock %}</title>
+    <!-- Bootstrap para responsividade -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+      body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(135deg, #e0f7fa, #80deea);
+        color: #333;
+        margin: 0;
+        padding: 0;
+      }
+      nav {
+        background-color: #007bff;
+      }
+      nav a {
+        color: #fff !important;
+        font-weight: bold;
+      }
+      .container {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+      }
+      .alert {
+        margin-bottom: 15px;
+      }
+      footer {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 14px;
+        color: #fff;
+      }
+    </style>
+    {% block extra_head %}{% endblock %}
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+      <a class="navbar-brand" href="{{ url_for('index') }}">Estoque</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navBar">
+        <ul class="navbar-nav ml-auto">
+          {% if session.user %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Início</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('produtos') }}">Produtos</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('movimentacoes') }}">Movimentações</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('exportar') }}">Exportar CSV</a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Sair</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+    <div class="container">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+    </div>
+    <footer class="bg-primary py-3">
+      Desenvolvido por Samuel Sousa de Almeida
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

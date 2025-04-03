@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Início - Estoque{% endblock %}
+{% block content %}
+<h1 class="text-center">Bem-vindo(a) ao Sistema de Estoque</h1>
+<p class="text-center text-muted">Gerencie seus produtos e movimentações com eficiência.</p>
+<hr>
+<h2>Produtos em Estoque</h2>
+<input type="text" id="searchInput" class="form-control mb-3" placeholder="Buscar produto pelo nome ou código...">
+{% if produtos %}
+<div class="table-responsive">
+  <table class="table table-striped table-hover" id="productTable">
+    <thead class="thead-dark">
+      <tr>
+        <th>Código</th>
+        <th>Nome</th>
+        <th>Quantidade</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prod in produtos %}
+      <tr>
+        <td>{{ prod['codigo'] }}</td>
+        <td>{{ prod['nome'] }}</td>
+        <td>{{ prod['quantidade'] }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<p class="text-center">Nenhum produto cadastrado.</p>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script>
+$(document).ready(function(){
+  $("#searchInput").on("keyup", function(){
+    var value = $(this).val().toLowerCase();
+    $("#productTable tbody tr").filter(function(){
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+{% endblock %}
